@@ -20,7 +20,7 @@ countTrgMuons = cms.EDFilter("PATCandViewCountFilter",
     src       = cms.InputTag("muonBPH", "SelectedMuons")
 )
 
-muonBPHTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
+muonBPHTable = cms.EDProducer("SimplePATMuonFlatTableProducer",
     src  = cms.InputTag("muonBPH:SelectedMuons"),
     cut  = cms.string(""), #we should not filter on cross linked collections
     name = cms.string("Muon"),
@@ -47,7 +47,9 @@ muonBPHTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
         sip3d   = Var("abs(dB('PV3D')/edB('PV3D'))", float, doc="3D impact parameter significance wrt first PV"),
         pfRelIso03_all = Var("(pfIsolationR03().sumChargedHadronPt + max(pfIsolationR03().sumNeutralHadronEt + pfIsolationR03().sumPhotonEt - pfIsolationR03().sumPUPt/2,0.0))/pt", float, doc="PF relative isolation dR=0.3, total (deltaBeta corrections)"),
         pfRelIso04_all = Var("(pfIsolationR04().sumChargedHadronPt + max(pfIsolationR04().sumNeutralHadronEt + pfIsolationR04().sumPhotonEt - pfIsolationR04().sumPUPt/2,0.0))/pt", float, doc="PF relative isolation dR=0.4, total (deltaBeta corrections)"),
-        isPFcand    = Var("isPFMuon", bool, doc="muon is PF candidate"),
+#        isPFcand = Var("bestTrack().isPFMuon()", bool, doc="muon is PF candidate"),
+        isPFcand = Var("isPFMuon",bool,doc="muon is PF candidate"),
+
         isGlobal    = Var("isGlobalMuon", bool, doc="muon is global muon"),
         isTracker   = Var("isTrackerMuon", bool, doc="muon is tracker muon"),
         looseId     = Var("passed('CutBasedIdLoose')", bool, doc="cut-based ID, medium WP"),

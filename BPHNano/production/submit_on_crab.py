@@ -30,8 +30,8 @@ def parse_args():
     parser.add_argument('-c', '--cmd', default='submit', choices = ['submit', 'status'], help= 'Crab command')
     parser.add_argument('-f', '--filter', default='*', help = 'filter samples, POSIX regular expressions allowed') 
     parser.add_argument('-w', '--workarea', default='BPHNANO_%s' % production_tag, help = 'Crab working area name')
-    parser.add_argument('-o', '--outputdir', default= '/store/user/valukash/', help='LFN Output high-level directory: the LFN will be saved in outputdir+workarea ')
-    parser.add_argument('-s', '--site', default='T3_CH_CERNBOX', help='T2 or T3 cite where user has access. To be checked with crab checkout')
+    parser.add_argument('-o', '--outputdir', default= '/store/group/cmst3/group/bpark/gmelachr/', help='LFN Output high-level directory: the LFN will be saved in outputdir+workarea ')
+    parser.add_argument('-s', '--site', default='T2_CH_CERN', help='T2 or T3 cite where user has access. To be checked with crab checkout')
     parser.add_argument('-t', '--tag', default=production_tag, help='Production Tag extra')
     parser.add_argument('-p', '--psetcfg', default="../test/run_bphNano_cfg.py", help='Plugin configuration file')
     parser.add_argument('-e', '--extra', nargs='*', default=list(),  help='Optional extra input files')
@@ -40,7 +40,7 @@ def parse_args():
     
 def submit(config):
     try:
-        crabCommand('submit', config = config)
+        crabCommand('-dev submit', config = config)
     except HTTPException as hte:
         print("Failed submitting task: %s" % (hte.headers))
     except ClientException as cle:
@@ -144,11 +144,14 @@ if __name__ == '__main__':
                
                 data_type = 'mc' if sample_info['isMC'] else 'data'
 
-                config_.Data.splitting = 'FileBased'
-                if not sample_info['isMC']:
-                    config_.Data.lumiMask = sample_info.get('lumimask', None)
+                if sample_info['isMC']: config_.Data.splitting = 'FileBased'
+                else: config_.Data.splitting = 'LumiBased'
+
+                if sample_info['isMC']:
+                    config_.Data.lumiMask = ''                    
                 else:
-                    config_.Data.lumiMask = ''
+                    config_.Data.lumiMask = sample_info.get('lumimask', None)
+
                 config_.Data.unitsPerJob = common_config[data_type].get('splitting', None)
 
                 globaltag = sample_info.get('globaltag', "auto:run3_data")

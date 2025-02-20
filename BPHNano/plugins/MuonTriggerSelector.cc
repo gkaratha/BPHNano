@@ -24,6 +24,8 @@
 #include "MagneticField/Engine/interface/MagneticField.h"
 #include "MagneticField/Records/interface/IdealMagneticFieldRecord.h"
 
+#include "DataFormats/Math/interface/deltaR.h"
+
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
 #include "helper.h"
 
@@ -129,8 +131,8 @@ void MuonTriggerSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSe
         for (size_t i = 0; i < muon.triggerObjectMatches().size(); i++) {
           if (muon.triggerObjectMatch(i) != 0 && muon.triggerObjectMatch(i)->hasPathName(cstr, true, true)) {
             frs[ipath] = 1;
-            float dr = TMath::Sqrt(pow(muon.triggerObjectMatch(i)->eta() - muon.eta(), 2.) + pow(muon.triggerObjectMatch(i)->phi() - muon.phi(), 2.));
-            float dpt = (muon.triggerObjectMatch(i)->pt() - muon.pt()) / muon.triggerObjectMatch(i)->pt();
+            float dr=deltaR(muon.eta(),muon.phi(),muon.triggerObjectMatch(i)->eta(),muon.triggerObjectMatch(i)->phi());
+	    float dpt = (muon.triggerObjectMatch(i)->pt() - muon.pt()) / muon.triggerObjectMatch(i)->pt();
             temp_dr[i] = dr;
             temp_dpt[i] = dpt;
             temp_pt[i] = muon.triggerObjectMatch(i)->pt();

@@ -22,7 +22,7 @@ CountKstarPiK = cms.EDFilter("PATCandViewCountFilter",
     src       = cms.InputTag("KstarToPiK")
 )  
 
-KstarToPiKTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
+KstarToPiKTable = cms.EDProducer("SimpleCompositeCandidateFlatTableProducer",
     src  = cms.InputTag("KstarToPiK"),
     cut  = cms.string(""), #we should not filter on cross linked collections
     name = cms.string("KstarToPiK"),

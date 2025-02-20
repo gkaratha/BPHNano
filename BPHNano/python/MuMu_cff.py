@@ -25,7 +25,7 @@ CountDiMuonBPH = cms.EDFilter("PATCandViewCountFilter",
 
 ########################### Tables ###########################
 
-MuMuTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
+MuMuTable = cms.EDProducer("SimpleCompositeCandidateFlatTableProducer",
     src = cms.InputTag("MuMu:SelectedDiLeptons"),
     cut = cms.string(""), #we should not filter on cross linked collections
     name = cms.string("MuMu"),

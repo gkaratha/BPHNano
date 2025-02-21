@@ -22,9 +22,7 @@ def Defaultsamples(isMC,decay):
                   'root://cms-xrd-global.cern.ch//store/mc/Run3Summer22EEMiniAODv4/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCP5_13p6TeV_pythia8-evtgen/MINIAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/2540000/04415d2e-62f7-4c64-aa43-27cd63a43243.root',\
                   'root://cms-xrd-global.cern.ch//store/mc/Run3Summer23MiniAODv4/B0ToJpsiK0s_JpsiFilter_MuFilter_K0sFilter_TuneCP5_13p6TeV_pythia8-evtgen/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v3/2820000/02555ce8-49a9-485f-9d46-3c5c49a8359c.root']
     else:
-       #return ['root://cms-xrd-global.cern.ch//store/data/Run2023B/ParkingDoubleMuonLowMass0/MINIAOD/PromptReco-v1/000/366/729/00000/27addd1b-2dfd-422e-9ee6-32540a1680c7.root'] 
-       return ['root://cms-xrd-global.cern.ch//store/data/Run2022D/ParkingDoubleMuonLowMass0/MINIAOD/10Dec2022-v2/25610000/79a953fb-ecee-457c-a06a-41352cf1ec10.root']
-
+       return ['root://cms-xrd-global.cern.ch//store/data/Run2024C/ParkingDoubleMuonLowMass0/MINIAOD/PromptReco-v1/000/379/415/00000/b40397b5-61c6-4887-8f4e-025e8ca925ee.root']
 
 
 options = VarParsing('python')
@@ -76,11 +74,11 @@ options.register('decay', 'all',
 options.setDefault('maxEvents', 1000)
 options.setDefault('tag', 'test')
 
-print(options)
+#print(options)
 options.parseArguments()
-print("////////////////// BPHnano running with options: ////////////////////////")
-print(options)
-print("/////////////////////////////////////////////////////////////////////////")
+#print("////////////////// BPHnano running with options: ////////////////////////")
+#print(options)
+#print("/////////////////////////////////////////////////////////////////////////")
 
 globaltag = '124X_mcRun3_2022_realistic_v11' if options.isMC else '130X_dataRun3_Prompt_v3'
 
@@ -106,8 +104,9 @@ annotation = '%s nevts:%d' % (outputFileNANO, options.maxEvents)
 
 # Process
 from Configuration.StandardSequences.Eras import eras
+#from PhysicsTools.NanoAOD.nano_eras_cff import Run3_2023
 
-process = cms.Process('BPHNANO',eras.Run3)
+process = cms.Process('BPHNANO',eras.Run3,eras.run3_nanoAOD_pre142X)
 
 # import of standard configurations
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
@@ -202,11 +201,11 @@ elif options.decay == "all":
    process = nanoAOD_customizeBToXLL(process,options.isMC)
 
 else:
-   print("Undefined decay option")
+#   print("Undefined decay option")
    import sys
    sys.exit(1)
 
-print("processing modules:",process.nanoSequence)
+#print("processing modules:",process.nanoSequence)
 
 process.nanoAOD_BPH_step = cms.Path(process.nanoSequence)
 
@@ -242,6 +241,6 @@ process.load("TrackingTools/TransientTrack/TransientTrackBuilder_cfi")
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
 
-print(process.dumpPython())
+#print(process.dumpPython())
 
 

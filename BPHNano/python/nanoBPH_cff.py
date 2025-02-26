@@ -32,7 +32,8 @@ nanoSequence = cms.Sequence(nanoMetadata +
                             cms.Sequence(vertexTask) +
                             cms.Sequence(globalTablesTask)+ 
                             cms.Sequence(vertexTablesTask) +
-                            cms.Sequence(pVertexTable) 
+                            cms.Sequence(pVertexTable)+
+                            cms.Sequence(nanoSequenceCommon)                           
                           )
 
 

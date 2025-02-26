@@ -71,7 +71,7 @@ options.register('decay', 'all',
 )
 
 
-options.setDefault('maxEvents', 1000)
+options.setDefault('maxEvents', -1)
 options.setDefault('tag', 'test')
 
 #print(options)
@@ -133,6 +133,7 @@ process.source = cms.Source(
 )
 
 process.options = cms.untracked.PSet(
+#    TryToContinue = cms.untracked.vstring('ProductNotFound'),
     wantSummary = cms.untracked.bool(options.wantSummary),
 )
 
@@ -184,6 +185,7 @@ from PhysicsTools.BPHNano.nanoBPH_cff import *
 if options.isMC:
    process = nanoAOD_customizeMC(process)
 
+process = nanoAOD_customizeCommon(process)
 process = nanoAOD_customizeMuonBPH(process,options.isMC)
 process = nanoAOD_customizeDiMuonBPH(process,options.isMC)
 process = nanoAOD_customizeTrackBPH(process,options.isMC)

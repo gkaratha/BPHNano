@@ -13,7 +13,7 @@ def Defaultsamples(isMC,decay):
        
        if decay=="KLL":
           return ['root://cms-xrd-global.cern.ch//store/mc/Run3Summer22MiniAODv4/BuToJpsiK_BMuonFilter_SoftQCDnonD_TuneCP5_13p6TeV_pythia8-evtgen/MINIAODSIM/130X_mcRun3_2022_realistic_v5-v2/2520000/ed50617a-980e-4b7a-8dc4-892e0f5ebd77.root']
-       elif decay=="KstarLL":
+       elif decay=="TrkTrkLL":
            return ['root://cms-xrd-global.cern.ch//store/mc/Run3Summer22EEMiniAODv4/BdToJpsiKstar_BMuonFilter_SoftQCDnonD_TuneCP5_13p6TeV_pythia8-evtgen/MINIAODSIM/130X_mcRun3_2022_realistic_postEE_v6-v2/2540000/04415d2e-62f7-4c64-aa43-27cd63a43243.root']
        elif decay=="KshortLL":
           return ['root://cms-xrd-global.cern.ch//store/mc/Run3Summer23MiniAODv4/B0ToJpsiK0s_JpsiFilter_MuFilter_K0sFilter_TuneCP5_13p6TeV_pythia8-evtgen/MINIAODSIM/130X_mcRun3_2023_realistic_v14-v3/2820000/02555ce8-49a9-485f-9d46-3c5c49a8359c.root']
@@ -52,7 +52,7 @@ options.register('wantFullRECO', False,
     "Produces additional EDM file"
     )
 
-options.register('reportEvery', 1,
+options.register('reportEvery', 100,
     VarParsing.multiplicity.singleton,
     VarParsing.varType.int,
     "Report every N events"
@@ -67,11 +67,11 @@ options.register('skip', 0,
 options.register('decay', 'all',
     VarParsing.multiplicity.singleton,
     VarParsing.varType.string,
-    "Options: all KLL KshortLL KstarLL"
+    "Options: all KLL KshortLL TrkTrkLL"
 )
 
 
-options.setDefault('maxEvents', 1000)
+options.setDefault('maxEvents', -1)
 options.setDefault('tag', 'test')
 
 #print(options)
@@ -133,6 +133,7 @@ process.source = cms.Source(
 )
 
 process.options = cms.untracked.PSet(
+#    TryToContinue = cms.untracked.vstring('ProductNotFound'),
     wantSummary = cms.untracked.bool(options.wantSummary),
 )
 
@@ -184,6 +185,7 @@ from PhysicsTools.BPHNano.nanoBPH_cff import *
 if options.isMC:
    process = nanoAOD_customizeMC(process)
 
+process = nanoAOD_customizeCommon(process)
 process = nanoAOD_customizeMuonBPH(process,options.isMC)
 process = nanoAOD_customizeDiMuonBPH(process,options.isMC)
 process = nanoAOD_customizeTrackBPH(process,options.isMC)
@@ -191,8 +193,8 @@ process = nanoAOD_customizeTrackBPH(process,options.isMC)
 if options.decay == "KLL":
    process = nanoAOD_customizeBToKLL(process,options.isMC)
 
-elif options.decay == "KstarLL":
-   process = nanoAOD_customizeBToKstarLL(process,options.isMC)
+elif options.decay == "TrkTrkLL":
+   process = nanoAOD_customizeBToTrkTrkLL(process,options.isMC)
 
 elif options.decay == "KshortLL": 
    process = nanoAOD_customizeBToKshortLL(process,options.isMC)

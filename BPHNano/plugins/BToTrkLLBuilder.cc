@@ -178,6 +178,12 @@ void BToTrkLLBuilder::produce(edm::StreamID, edm::Event &evt, edm::EventSetup co
       auto lxy = l_xy(fitter, *beamspot);
       cand.addUserFloat("l_xy", lxy.value());
       cand.addUserFloat("l_xy_unc", lxy.error());
+      // track impact parameter from SV
+      TrajectoryStateOnSurface tsos = extrapolator.extrapolate(kaons_ttracks->at(k_idx).impactPointState(), fitter.fitted_vtx());
+      std::pair<bool, Measurement1D> cur2DIP = signedTransverseImpactParameter(tsos, fitter.fitted_refvtx(), *beamspot);
+      cand.addUserFloat("k_svip2d" , cur2DIP.second.value());
+      cand.addUserFloat("k_svip2d_err" , cur2DIP.second.error());
+
 
       if ( !post_vtx_selection_(cand) ) continue;
 
@@ -208,11 +214,6 @@ void BToTrkLLBuilder::produce(edm::StreamID, edm::Event &evt, edm::EventSetup co
                           fitter.daughter_p4(idaughter).phi() );
       }
 
-      // track impact parameter from SV
-      TrajectoryStateOnSurface tsos = extrapolator.extrapolate(kaons_ttracks->at(k_idx).impactPointState(), fitter.fitted_vtx());
-      std::pair<bool, Measurement1D> cur2DIP = signedTransverseImpactParameter(tsos, fitter.fitted_refvtx(), *beamspot);
-      cand.addUserFloat("k_svip2d" , cur2DIP.second.value());
-      cand.addUserFloat("k_svip2d_err" , cur2DIP.second.error());
 
       //compute isolation
       std::vector<float> isos = TrackerIsolation(pu_tracks, cand, dnames );

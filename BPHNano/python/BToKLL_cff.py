@@ -16,8 +16,8 @@ BToKmumu = cms.EDProducer(
     preVtxSelection  = cms.string('pt > 5.0'
                                   '&& 4.5 < mass && mass < 6.'
                                   '&& userFloat("min_dr") > 0.03'),
-    postVtxSelection = cms.string('5. < userFloat("fitted_mass") && userFloat("fitted_mass") < 6.' 
-                                  '&& userFloat("sv_prob") > 0.001'
+    postVtxSelection = cms.string('4.7 < userFloat("fitted_mass") && userFloat("fitted_mass") < 6.' 
+                                  '&& userFloat("sv_prob") > 0.001 && -0.045<userFloat("k_svip2d") && userFloat("k_svip2d")<0.045'
                                   '&& userFloat("fitted_cos_theta_2D") > 0.9'),
     dileptonMassContraint = cms.double(-1)
 )

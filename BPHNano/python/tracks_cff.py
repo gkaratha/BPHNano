@@ -10,7 +10,7 @@ tracksBPH = cms.EDProducer(
     trackSelection  = cms.string("pt>0.7 && abs(eta)<2.4"),  # We need all tracks for tagging, no cuts here for now
     muons           = cms.InputTag("slimmedMuons"),
     electrons       = cms.InputTag("slimmedElectrons"),
-    maxDzDilep      = cms.double(-1.0),
+    maxDzDilep      = cms.double(1.0),
     dcaSig          = cms.double(-100000),
 )
 

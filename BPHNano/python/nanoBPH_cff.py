@@ -17,10 +17,10 @@ from PhysicsTools.BPHNano.particlelevelBPH_cff import *
 from PhysicsTools.BPHNano.muons_cff import *
 from PhysicsTools.BPHNano.MuMu_cff import *
 from PhysicsTools.BPHNano.tracks_cff import *
-from PhysicsTools.BPHNano.KstarToKPi_cff import *
+from PhysicsTools.BPHNano.DiTrack_cff import *
 from PhysicsTools.BPHNano.KshortToPiPi_cff import *
 from PhysicsTools.BPHNano.BToKLL_cff import *
-from PhysicsTools.BPHNano.BToKstarLL_cff import *
+from PhysicsTools.BPHNano.BToTrkTrkLL_cff import *
 from PhysicsTools.BPHNano.BToKshortLL_cff import *
 
 
@@ -80,11 +80,11 @@ def nanoAOD_customizeBToKLL(process,isMC):
 
 
 
-def nanoAOD_customizeBToKstarLL(process,isMC):
+def nanoAOD_customizeBToTrkTrkLL(process,isMC):
     if isMC:
-       process.nanoSequence = cms.Sequence( process.nanoSequence + KstarPiKSequence + KstarPiKTables + BToKstarMuMuSequence + BToKstarMuMuTables  )
+       process.nanoSequence = cms.Sequence( process.nanoSequence + DiTrackSequence + DiTrackTables + BToTrkTrkMuMuSequence + BToTrkTrkMuMuTables  )
     else:
-       process.nanoSequence = cms.Sequence( process.nanoSequence + KstarPiKSequence + CountKstarPiK+ KstarPiKTables+ BToKstarMuMuSequence + BToKstarMuMuTables  )
+       process.nanoSequence = cms.Sequence( process.nanoSequence + DiTrackSequence + CountDiTrack + DiTrackTables+ BToTrkTrkMuMuSequence + BToTrkTrkMuMuTables  )
     return process
 
 
@@ -102,9 +102,9 @@ def nanoAOD_customizeBToKshortLL(process, isMC):
 
 def nanoAOD_customizeBToXLL(process,isMC):
     if isMC:
-       process.nanoSequence = cms.Sequence( process.nanoSequence + BToKMuMuSequence + BToKMuMuTables + KshortToPiPiSequenceMC + KshortToPiPiTablesMC + BToKshortMuMuSequence + BToKshortMuMuTables +  KstarPiKTables +KstarPiKTables+ BToKstarMuMuSequence + BToKstarMuMuTables  )
+       process.nanoSequence = cms.Sequence( process.nanoSequence + BToKMuMuSequence + BToKMuMuTables + KshortToPiPiSequenceMC + KshortToPiPiTablesMC + BToKshortMuMuSequence + BToKshortMuMuTables + DiTrackSequence + DiTrackTables+ BToTrkTrkMuMuSequence + BToTrkTrkMuMuTables  )
     else:
-       process.nanoSequence = cms.Sequence( process.nanoSequence + BToKMuMuSequence + BToKMuMuTables + KshortToPiPiSequence + KshortToPiPiTables + BToKshortMuMuSequence +BToKshortMuMuTables + KstarPiKSequence +  KstarPiKTables +KstarPiKTables+ BToKstarMuMuSequence + BToKstarMuMuTables )
+       process.nanoSequence = cms.Sequence( process.nanoSequence + BToKMuMuSequence + BToKMuMuTables + KshortToPiPiSequence + KshortToPiPiTables + BToKshortMuMuSequence +BToKshortMuMuTables + DiTrackSequence + DiTrackSequence +DiTrackTables+ BToTrkTrkMuMuSequence + BToTrkTrkMuMuTables )
     return process
 
 

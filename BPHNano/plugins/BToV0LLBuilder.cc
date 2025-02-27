@@ -190,6 +190,11 @@ void BToV0LLBuilder::produce(edm::StreamID, edm::Event &evt, edm::EventSetup con
       cand.addUserFloat("l_xy", lxy.value());
       cand.addUserFloat("l_xy_unc", lxy.error());
 
+      TrajectoryStateOnSurface tsos = extrapolator.extrapolate(v0_ttracks->at(v0_idx).impactPointState(), fitter.fitted_vtx());
+      std::pair<bool, Measurement1D> cur2DIP = signedTransverseImpactParameter(tsos, fitter.fitted_refvtx(), *beamspot);
+      cand.addUserFloat("v0_svip2d" , cur2DIP.second.value());
+      cand.addUserFloat("v0_svip2d_err" , cur2DIP.second.error());
+
       if (!post_vtx_selection_(cand)) continue;
 
       cand.addUserFloat("vtx_x", cand.vx());
@@ -212,11 +217,6 @@ void BToV0LLBuilder::produce(edm::StreamID, edm::Event &evt, edm::EventSetup con
         cand.addUserFloat("fitted_" + dnames[idaughter] + "_phi", fitter.daughter_p4(idaughter).phi() );
       }
 
-      // track impact parameter from dilepton SV
-      TrajectoryStateOnSurface tsos = extrapolator.extrapolate(v0_ttracks->at(v0_idx).impactPointState(), fitter.fitted_vtx());
-      std::pair<bool, Measurement1D> cur2DIP = signedTransverseImpactParameter(tsos, fitter.fitted_refvtx(), *beamspot);
-      cand.addUserFloat("v0_svip2d" , cur2DIP.second.value());
-      cand.addUserFloat("v0_svip2d_err" , cur2DIP.second.error());
 
       //compute isolation
       std::vector<float> isos = TrackerIsolation(pu_tracks, cand, dnames );
